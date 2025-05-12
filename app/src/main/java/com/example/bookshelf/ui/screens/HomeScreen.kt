@@ -4,11 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,8 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -42,7 +40,16 @@ fun HomeScreen(
 ) {
     when (bookshelfUiState) {
         is BookshelfUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
-        is BookshelfUiState.Success -> ThumbnailsGridScreen(bookshelfUiState.thumbnails, modifier)
+        is BookshelfUiState.Success -> {
+            if (bookshelfUiState.thumbnails.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_result_found),
+                    textAlign = TextAlign.Center
+                )
+            } else {
+                ThumbnailsGridScreen(bookshelfUiState.thumbnails, modifier)
+            }
+        }
         is BookshelfUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxSize())
     }
 }

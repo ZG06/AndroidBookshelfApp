@@ -8,21 +8,21 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
 interface BooksInfoRepository {
-    suspend fun getBooksIds(): List<BookId>
-    suspend fun getBooksThumbnails(): MutableList<String>
+    suspend fun getBooksIds(query: String): List<BookId>
+    suspend fun getBooksThumbnails(query: String): MutableList<String>
 }
 
 class NetworkBooksInfoRepository(
     private val booksApiService: BooksApiService
 ) : BooksInfoRepository {
-    override suspend fun getBooksIds(): List<BookId> {
-        val response: BooksResponse = booksApiService.getBooks()
+    override suspend fun getBooksIds(query: String): List<BookId> {
+        val response: BooksResponse = booksApiService.getBooks(query)
 
         return response.items.map { BookId(it.id) }
     }
 
-    override suspend fun getBooksThumbnails(): MutableList<String> = coroutineScope {
-        val ids = getBooksIds()
+    override suspend fun getBooksThumbnails(query: String): MutableList<String> = coroutineScope {
+        val ids = getBooksIds(query)
 
         val deferreds: List<Deferred<String?>> = ids.map { bookId ->
             async {

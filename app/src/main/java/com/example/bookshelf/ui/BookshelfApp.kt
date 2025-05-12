@@ -3,6 +3,7 @@
 package com.example.bookshelf.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -25,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bookshelf.R
 import com.example.bookshelf.ui.screens.BookshelfViewModel
 import com.example.bookshelf.ui.screens.HomeScreen
+import com.example.bookshelf.ui.screens.SearchScreen
 
 
 @Composable
@@ -37,12 +39,19 @@ fun BookshelfApp() {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            val bookshelfViewModel: BookshelfViewModel =
-                viewModel(factory = BookshelfViewModel.Factory)
-            HomeScreen(
-                bookshelfUiState = bookshelfViewModel.bookshelfUiState,
-                retryAction = bookshelfViewModel::getThumbnails
-            )
+            val bookshelfViewModel: BookshelfViewModel = viewModel(factory = BookshelfViewModel.Factory)
+
+            Column {
+                SearchScreen(
+                    query = bookshelfViewModel.query,
+                    onValueChange = { bookshelfViewModel.query = it },
+                    onSearch = { bookshelfViewModel.performSearch() },
+                )
+                HomeScreen(
+                    bookshelfUiState = bookshelfViewModel.bookshelfUiState,
+                    retryAction = bookshelfViewModel::getThumbnails
+                )
+            }
         }
     }
 }

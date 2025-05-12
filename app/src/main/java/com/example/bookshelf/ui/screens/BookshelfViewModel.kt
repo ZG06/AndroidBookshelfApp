@@ -29,6 +29,9 @@ class BookshelfViewModel(
     var bookshelfUiState: BookshelfUiState by mutableStateOf(BookshelfUiState.Loading)
         private set
 
+    var query by mutableStateOf("")
+    var searchQuery by mutableStateOf("history")
+
     init {
         getThumbnails()
     }
@@ -37,13 +40,19 @@ class BookshelfViewModel(
         viewModelScope.launch {
             bookshelfUiState = BookshelfUiState.Loading
             bookshelfUiState = try {
-                BookshelfUiState.Success(booksInfoRepository.getBooksThumbnails())
+                BookshelfUiState.Success(booksInfoRepository.getBooksThumbnails(searchQuery))
             } catch (e: IOException) {
                 BookshelfUiState.Error
             } catch (e: HttpException) {
                 BookshelfUiState.Error
             }
+
         }
+    }
+
+    fun performSearch() {
+        searchQuery = query
+        getThumbnails()
     }
 
     companion object {
