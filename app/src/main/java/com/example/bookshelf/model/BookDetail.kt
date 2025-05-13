@@ -10,7 +10,9 @@ data class BookDetail(
 
 @Serializable
 data class VolumeInfo(
-    val imageLinks: ImageLinks
+    val imageLinks: ImageLinks,
+    val title: String,
+    val description: String
 )
 
 @Serializable

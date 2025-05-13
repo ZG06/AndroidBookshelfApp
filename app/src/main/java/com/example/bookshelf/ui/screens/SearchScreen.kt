@@ -1,6 +1,7 @@
 package com.example.bookshelf.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import com.example.bookshelf.R
 
 
@@ -27,7 +29,9 @@ fun SearchScreen(
         onValueChange = onValueChange,
         placeholder = { Text(text = stringResource(R.string.search)) },
         singleLine = true,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp),
         keyboardActions = KeyboardActions(
             onSearch = onSearch
         ),

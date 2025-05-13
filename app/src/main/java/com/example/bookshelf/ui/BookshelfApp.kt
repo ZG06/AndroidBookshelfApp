@@ -49,7 +49,7 @@ fun BookshelfApp() {
                 )
                 HomeScreen(
                     bookshelfUiState = bookshelfViewModel.bookshelfUiState,
-                    retryAction = bookshelfViewModel::getThumbnails
+                    retryAction = bookshelfViewModel::getDetails
                 )
             }
         }
@@ -61,7 +61,7 @@ fun BookshelfTopAppBar(
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
-        modifier = Modifier.height(100.dp),
+        modifier = modifier.height(70.dp),
         title = {
             Box(
                 modifier = Modifier

@@ -12,12 +12,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.network.HttpException
 import com.example.bookshelf.BookshelfApplication
 import com.example.bookshelf.data.BooksInfoRepository
+import com.example.bookshelf.model.BookDetailItem
 import kotlinx.coroutines.launch
 import okio.IOException
 
 
 sealed interface BookshelfUiState {
-    data class Success(val thumbnails: List<String>) : BookshelfUiState
+    data class Success(val details: List<BookDetailItem>) : BookshelfUiState
     object Error : BookshelfUiState
     object Loading : BookshelfUiState
 }
@@ -33,14 +34,14 @@ class BookshelfViewModel(
     var searchQuery by mutableStateOf("history")
 
     init {
-        getThumbnails()
+        getDetails()
     }
 
-    fun getThumbnails() {
+    fun getDetails() {
         viewModelScope.launch {
             bookshelfUiState = BookshelfUiState.Loading
             bookshelfUiState = try {
-                BookshelfUiState.Success(booksInfoRepository.getBooksThumbnails(searchQuery))
+                BookshelfUiState.Success(booksInfoRepository.getBooksDetails(searchQuery))
             } catch (e: IOException) {
                 BookshelfUiState.Error
             } catch (e: HttpException) {
@@ -52,7 +53,7 @@ class BookshelfViewModel(
 
     fun performSearch() {
         searchQuery = query
-        getThumbnails()
+        getDetails()
     }
 
     companion object {
